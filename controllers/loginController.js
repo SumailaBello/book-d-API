@@ -13,20 +13,27 @@ export const loginUser = async (req, res) => {
     console.log(req.body)
     const user = await userModel.findOne({email: req.body.email})
     if(!user) {
-        return res.status(500).send({
+        // return res.status(401).send({
+        //     success: false,
+        //     message: errorMsg,
+        // })
+        res.json(500, {
             success: false,
             message: errorMsg,
-        })
+        });
     }
 
     //incorrect password
     if (!compareSync(req.body.password, user.password)) {
         // res.status = 401;
-        res.status = 500;
-        return res.send({
+        // return res.send({
+        //     success: false,
+        //     message: errorMsg,
+        // })
+        res.json(500, {
             success: false,
             message: errorMsg,
-        })
+        });
     }
 
     const payload = {
