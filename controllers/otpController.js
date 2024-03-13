@@ -51,6 +51,9 @@ const sendOTP = async (req, res) => {
 
 //confirm user provided otp
 export const confirmOtp = async (req, res) => {
+
+    const { email } = req.body;
+
     // Find the most recent OTP for the email
     const response = await otpModel.find({email: email }).sort({ createdAt: -1 }).limit(1);
     if (response.length === 0 || otp !== response[0].otp) {
@@ -59,7 +62,7 @@ export const confirmOtp = async (req, res) => {
         message: 'The OTP is not valid',
       });
     }
-    const { email } = req.body;
+
     // Check if user is already present
     const user = await userModel.findOne({ email: email });
     const updateUser = userModel.findOneAndUpdate(

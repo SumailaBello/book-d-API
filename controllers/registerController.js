@@ -34,7 +34,7 @@ export const createUser = async (req, res) => {
         const user = await userToDb.save();
         
         //sends otp to registered user
-        sendOTP(req, res);
+        sendOTP(req, res)
         //return response to users
         return res.status(200).send({
             success: true,

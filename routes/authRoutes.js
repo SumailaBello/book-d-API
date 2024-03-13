@@ -21,7 +21,7 @@ router.post('/forgot-password', forgotPassword);
 //CONFIRM OTP
 router.post('/confirm-otp', confirmOtp);
 
-router.post('/sendEmail', sendOTP);
+// router.post('/sendEmail', sendOTP);
 
 //NOT FOUND
 router.all('*', notFoundHandler);

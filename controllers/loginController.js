@@ -8,12 +8,12 @@ import '../config/passport.js';
 
 const errorMsg = 'Invalid Credentials';
 
-//REGISTER USER
+//Login USER
 export const loginUser = async (req, res) => {
     console.log(req.body)
     const user = await userModel.findOne({email: req.body.email})
     if(!user) {
-        return res.status(401).send({
+        return res.status(500).send({
             success: false,
             message: errorMsg,
         })
@@ -21,7 +21,8 @@ export const loginUser = async (req, res) => {
 
     //incorrect password
     if (!compareSync(req.body.password, user.password)) {
-        res.status = 401;
+        // res.status = 401;
+        res.status = 500;
         return res.send({
             success: false,
             message: errorMsg,
