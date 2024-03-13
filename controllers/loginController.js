@@ -17,7 +17,7 @@ export const loginUser = async (req, res) => {
         //     success: false,
         //     message: errorMsg,
         // })
-        res.json(500, {
+        return res.status(500).json({
             success: false,
             message: errorMsg,
         });
@@ -30,7 +30,7 @@ export const loginUser = async (req, res) => {
         //     success: false,
         //     message: errorMsg,
         // })
-        res.json(500, {
+        return res.status(500).json({
             success: false,
             message: errorMsg,
         });
