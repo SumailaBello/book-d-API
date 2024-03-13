@@ -1,0 +1,10 @@
+# local env files
+.env
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# dependencies
+node_modules/
