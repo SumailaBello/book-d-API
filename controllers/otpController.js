@@ -4,6 +4,7 @@
 import otpGenerator from 'otp-generator';
 import {otpModel} from '../schema/OtpSchema.js';
 import {userModel} from '../schema/UserSchema.js';
+import jwt from "jsonwebtoken";
 
 //send otp to user
 const sendOTP = async (req, res) => {
@@ -99,6 +100,7 @@ export const confirmOtp = async (req, res) => {
 
     // Find the most recent OTP for the email
     const response = await otpModel.find({email: email }).sort({ createdAt: -1 }).limit(1);
+    console.log('OTP', response)
     if (response.length === 0 || otp !== response[0].otp) {
       return res.status(400).send({
         success: false,
