@@ -49,6 +49,49 @@ const sendOTP = async (req, res) => {
   }
 };
 
+//resend otp to user
+export const resendOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+    // Check if user is already present
+    const checkUserPresent = await userModel.findOne({ email: email });
+    // If user not found with provided email
+    if (!checkUserPresent) {
+      return res.status(401).json({
+        success: false,
+        message: 'User does not exist',
+      });
+    }
+
+    //generate otp
+    let otp = otpGenerator.generate(4, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+    });
+
+    let result = await otpModel.findOne({ otp: otp });
+    while (result) {
+      otp = otpGenerator.generate(4, {
+        upperCaseAlphabets: false,
+      });
+      result = await otpModel.findOne({ otp: otp });
+    }
+    const otpPayload = { email, otp };
+    const otpBody = await otpModel.create(otpPayload);
+    console.log('OTP Sent successfully')
+    console.log(res)
+    return res.status(200).send({
+      success: true,
+      message: 'OTP sent successfully',
+      otp,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 //confirm user provided otp
 export const confirmOtp = async (req, res) => {
 

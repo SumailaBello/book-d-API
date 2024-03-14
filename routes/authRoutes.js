@@ -3,7 +3,7 @@ import { createUser } from "../controllers/registerController.js";
 import { loginUser } from "../controllers/loginController.js";
 import { notFoundHandler } from "../controllers/404Controller.js";
 import { forgotPassword } from "../controllers/forgotPasswordController.js";
-import sendOTP, { confirmOtp } from "../controllers/otpController.js";
+import sendOTP, { confirmOtp, resendOTP } from "../controllers/otpController.js";
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.post('/forgot-password', forgotPassword);
 //CONFIRM OTP
 router.post('/confirm-otp', confirmOtp);
 
-// router.post('/sendEmail', sendOTP);
+router.post('/resend-otp', resendOTP);
 
 //NOT FOUND
 router.all('*', notFoundHandler);
