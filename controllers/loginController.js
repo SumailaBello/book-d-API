@@ -29,9 +29,8 @@ export const loginUser = async (req, res) => {
     }
 
     const payload = {
-        // email: user.email,
-        // id: user._id,
-        ...user
+        email: user.email,
+        id: user._id,
     }
 
     //payload is basically the user details or object

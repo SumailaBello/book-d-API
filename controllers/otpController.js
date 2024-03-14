@@ -110,7 +110,7 @@ export const confirmOtp = async (req, res) => {
 
     // Check if user is already present
     const user = await userModel.findOne({ email: email });
-    const updateUser = userModel.findOneAndUpdate(
+    const updateUser = await userModel.findOneAndUpdate(
         {email: email}, 
         {
             verified: true,
@@ -119,12 +119,13 @@ export const confirmOtp = async (req, res) => {
             new: true,
         }
     )
-
+    console.log('updated user', updateUser);
     //generate token
     const payload = {
-        ...updateUser
+        email: user.email,
+        id: user._id,
     }
-
+    
     //payload is basically the user details or object
     // RANDOM STRING IS THE SECRET USED FOR ENCRYPTION AND SHOULD BE A BETTER STRING
     const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "1d"});

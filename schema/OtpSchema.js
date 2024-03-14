@@ -15,13 +15,10 @@ const otpSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now(),
-    // expires: 60 * 5, // The document will be automatically deleted after 5 minutes of its creation time
   },
-  expireAt: {
-    type: Date,
-    default: Date.now() + (1000*60*5) // for 5 mins
-  }
 });
+
+otpSchema.index({"createdAt": 1}, {expireAfterSeconds: 60 * 5}) //expires and deleted after 5 minutes
 
 otpSchema.pre("save", async function (next) {
   console.log("New document saved to the database");
