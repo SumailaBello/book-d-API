@@ -39,12 +39,14 @@ export const loginUser = async (req, res) => {
 
     const modifiedUser = user;
     //removing password from returned user object
-    delete modifiedUser.password;
+    // delete modifiedUser.password;
 
     return res.status(200).send({
         success: true,
         message: "Logged in successfully!",
-        token: "Bearer " + token,
-        user: modifiedUser,
+        data: {
+            token: token,
+            user: modifiedUser,
+        },
     })
 }
