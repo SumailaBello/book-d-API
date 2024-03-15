@@ -97,7 +97,7 @@ export const resendOTP = async (req, res) => {
 export const confirmOtp = async (req, res) => {
 
     const { email, otp } = req.body;
-
+    console.log('body', req.body)
     // Find the most recent OTP for the email
     const response = await otpModel.find({email: email }).sort({ createdAt: -1 }).limit(1);
     console.log('OTP', response)
