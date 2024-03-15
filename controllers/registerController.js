@@ -14,7 +14,7 @@ export const createUser = async (req, res) => {
     console.log('Register post request');
     console.log(req.body);
     // Check if user is already present
-    const userObj = await userModel.findOne({ email: req.body.email }).select("-password")
+    const userObj = await userModel.findOne({ email: req.body.email });
     // If user found with provided email
     if (userObj) {
       return res.status(401).json({
@@ -50,27 +50,4 @@ export const createUser = async (req, res) => {
         })
     }
 
-    // console.log("POST ROUTE REACHED");
-    // const user = req.body;
-    // const userWithId = {...user, id: uuidv4()};
-    // users.push(userWithId);
-    // //SAVING to DB
-    // try {
-    //     const userDB = await userModel.create({
-    //         name: user.firstName + " " + user.lastName, 
-    //         age: user.age, 
-    //         uuid: uuidv4(), 
-    //         email: user.email,
-    //         jobTitle: user.jobTitle,
-    //         address
-    //     });
-    //     console.log(userDB)
-    // } 
-    // catch (err) {
-    //     console.log(err.message)
-    // }
-
-    // res.send(`User with the name ${user.firstName} added to the database`);
-    // console.log(req.body);
-    // console.log(req);
 }

@@ -133,8 +133,10 @@ export const confirmOtp = async (req, res) => {
     return res.status(200).send({
         success: true,
         message: "OTP Verification successful.",
-        token: token,
-        user: updateUser,
+        data: {
+            token: token,
+            user: updateUser,
+        },
     })
 };
   

@@ -37,7 +37,7 @@ export const loginUser = async (req, res) => {
     // RANDOM STRING IS THE SECRET USED FOR ENCRYPTION AND SHOULD BE A BETTER STRING
     const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "1d"});
 
-    const modifiedUser = user;
+    // const modifiedUser = user;
     //removing password from returned user object
     // delete modifiedUser.password;
 
@@ -46,7 +46,7 @@ export const loginUser = async (req, res) => {
         message: "Logged in successfully!",
         data: {
             token: token,
-            user: modifiedUser,
+            user: user,
         },
     })
 }

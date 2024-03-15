@@ -4,6 +4,7 @@ import { loginUser } from "../controllers/loginController.js";
 import { notFoundHandler } from "../controllers/404Controller.js";
 import { forgotPassword } from "../controllers/forgotPasswordController.js";
 import sendOTP, { confirmOtp, resendOTP } from "../controllers/otpController.js";
+import { resetPassword } from "../controllers/ResetPasswordController.js";
 
 const router = express.Router();
 
@@ -15,8 +16,11 @@ router.post('/register', createUser);
 //LOGIN USER
 router.post('/login', loginUser);
 
-//REQUEST PASSWORD RESET
+//REQUEST PASSWORD RESET OTP
 router.post('/forgot-password', forgotPassword);
+
+//PASSWORD RESET
+router.post('/reset-password', resetPassword);
 
 //CONFIRM OTP
 router.post('/confirm-otp', confirmOtp);

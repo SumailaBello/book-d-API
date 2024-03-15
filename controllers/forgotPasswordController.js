@@ -21,15 +21,20 @@ export const forgotPassword = async (req, res) => {
     }
 
     // send otp to user 
-    sendOTP(req, res);
+    await sendOTP(req, res);
+    return res.status(200).send({
+        success: true,
+        message: "Request successful!",
+        // user: user,
+    })
 
     //payload is basically the user details or object
     // RANDOM STRING IS THE SECRET USED FOR ENCRYPTION AND SHOULD BE A BETTER STRING
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "1d"})
+    // const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "1d"})
 
-    return res.status(200).send({
-        success: true,
-        message: "Logged in successfully!",
-        token: "Bearer " + token,
-    })
+    // return res.status(200).send({
+    //     success: true,
+    //     message: "Logged in successfully!",
+    //     token: "Bearer " + token,
+    // })
 }
