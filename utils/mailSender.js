@@ -10,7 +10,8 @@ const sendVerificationEmail = async (email, otp)=> {
         email,
         "Verification Email",
         `<h2>Please confirm your OTP</h2>
-         <p>Here is your OTP code: ${otp}</p>`
+         <p>Here is your OTP code: ${otp}</p>
+         <p>Code will expire after 5 minutes</p>`
       );
       console.log("Email sent successfully: ", mailResponse);
     } catch (error) {
