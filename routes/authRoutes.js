@@ -4,7 +4,7 @@ import { loginUser } from "../controllers/loginController.js";
 import { notFoundHandler } from "../controllers/404Controller.js";
 import { forgotPassword } from "../controllers/forgotPasswordController.js";
 import sendOTP, { confirmOtp, resendOTP } from "../controllers/otpController.js";
-import { resetPassword } from "../controllers/ResetPasswordController.js";
+import { resetPassword } from "../controllers/resetPasswordController.js";
 
 const router = express.Router();
 
