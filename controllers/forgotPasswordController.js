@@ -25,7 +25,7 @@ export const forgotPassword = async (req, res) => {
     return res.status(200).send({
         success: true,
         message: "Request successful!",
-        // user: user,
+        user: user,
     })
 
     //payload is basically the user details or object
