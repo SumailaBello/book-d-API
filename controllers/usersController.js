@@ -111,35 +111,46 @@ export const getTeamMembers = async (req, res) => {
 }
 
 //GET AVAILABILITY
-export const getAvailability = async (req, res) => {
-    const {id} = req.params;
-    try {
-        const user = await userModel.findById({id: id});
-        return res.status(200).send({
-            success: true,
-            message: 'Successful',
-            data: user.availability,
-        })
-    }
-    catch(err) {
-        return res.status(500).send({
-            success: false,
-            message: 'Request failed',
-        })
-    }
-}
+// export const getAvailability = async (req, res) => {
+//     const {id} = req.params;
+//     try {
+//         const user = await userModel.findById({id: id});
+//         return res.status(200).send({
+//             success: true,
+//             message: 'Successful',
+//             data: user.availability,
+//         })
+//     }
+//     catch(err) {
+//         return res.status(500).send({
+//             success: false,
+//             message: 'Request failed',
+//         })
+//     }
+// }
 
-//ADD AVAILABILITY
+//ADD AVAILABILITY BY USER ID
 export const addAvailability = async (req, res) => {
     // const {id} = req.params;
     const {date, id} = req.body;
     try {
-        const user = await userModel.findById({id: id});
-        user.availability.push(date);
+        const user = await userModel.findById({id: id})
+        const updatedUser = await userModel.findOneAndUpdate(
+            {
+                id: id
+            },
+            {
+                availability: [...user.availability, date]
+            },
+            {
+                new: true,
+            }
+            
+        );
         return res.status(200).send({
             success: true,
             message: 'Successful',
-            data: user.availability,
+            data: updatedUser,
         })
     }
     catch(err) {
@@ -180,7 +191,7 @@ export const removeAvailability = async (req, res) => {
     }
 }
 
-//GET APPOINTMENTS FOR A USER
+//GET APPOINTMENTS BY DATE FOR A USER
 export const getAppointments = async (req, res) => {
     const {userId} = req.params;
     console.log(userId);
