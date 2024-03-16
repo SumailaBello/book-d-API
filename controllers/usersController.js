@@ -1,5 +1,7 @@
 import {v4 as uuidv4} from "uuid";
 import {userModel} from "../schema/UserSchema.js";
+import {appointmentModel} from "../schema/AppointmentSchema.js";
+import axios from "axios";
 let users = [];
 
 //ADD NEW USER
@@ -8,68 +10,194 @@ export const getAllUsers = (req, res) => {
     console.log(users);
 }
 
-//ADD NEW USER
-export const createUser = async (req, res) => {
-    console.log("POST ROUTE REACHED");
-    const user = req.body;
-    const userWithId = {...user, id: uuidv4()};
-    users.push(userWithId);
-    //SAVING to DB
-    try {
-        const userDB = await userModel.create({
-            name: user.firstName + " " + user.lastName, 
-            age: user.age, 
-            uuid: uuidv4(), 
-            email: user.email,
-        });
-        console.log(userDB)
-    } 
-    catch (err) {
-        console.log(err.message)
-    }
-
-    res.send(`User with the name ${user.firstName} added to the database`);
-    // console.log(req.body);
-    // console.log(req);
-}
-
 //GET SPECIFIC USER BY ID
 export const getUser = async (req, res) => {
     const {id} = req.params;
-    const foundUser = users.find((user)=> user.id === id);
-    const userDb = await userModel.findById(id);
-    console.log(userDb);
-    res.send(foundUser);
-    console.log(id);
+    try {
+        const user = await userModel.findById(id);
+        console.log(user);
+        return res.status(200).send({
+            success: true,
+            message: 'Successful',
+            user: user,
+        })
+    } 
+    catch (err) {
+        return res.status(500).send({
+            success: false,
+            message: 'Unable to find user',
+        })
+    }
 
     //complex db query and chaining
-    const userQuery = await userModel.where("age")
-        .gt(12)
-        .where("name").equals("John")
-        .populate("bestFriend") //does what join does in sql. It populates the bestfriend field with the object from the model
-        .limit(2)
-        .select("age")
+    // const userQuery = await userModel.where("age")
+    //     .gt(12)
+    //     .where("name").equals("John")
+    //     .populate("bestFriend") //does what join does in sql. It populates the bestfriend field with the object from the model
+    //     .limit(2)
+    //     .select("age")
 }
 
 //DELETE SPECIFIC USER BY ID
-export const deleteUser = (req, res) => {
+export const deleteUser = async (req, res) => {
     const {id} = req.params;
-    users = users.filter((user)=> user.id !== id);
-    res.send(`Deleted user with ${id} successfully`);
+    try {
+        await userModel.findOneAndDelete({id: id});
+        return res.status(200).send({
+            success: true,
+            message: "User deleted.",
+        }) 
+    } 
+    catch (err) {
+        return res.status(500).send({
+            success: false,
+            message: "Unable to delete user",
+            error: err,
+        }) 
+    }
+    
 }
 
 //UPDATE SPECIFIC USER BY ID
 export const updateUser = async (req, res) => {
+    // const {id} = req.params;
+    const {name, jobTitle, address, businessName, id} = req.body;
+    try {
+        const user = await userModel.findById(id);
+        const updateUser = await userModel.findOneAndUpdate(
+            {id: id}, 
+            {
+                name: name ?? user.name,
+                jobTitle: jobTitle ?? user.jobTitle,
+                address: address ?? user.address,
+                businessName: businessName ?? user.businessName,
+            },
+            {
+                new: true,
+            }
+        )
+        return res.status(200).send({
+            success: true,
+            message: "User updated successfully.",
+            user: updateUser,
+        }) 
+    } 
+    catch (err) {
+        return res.status(500).send({
+            success: false,
+            message: "Request Error.",
+            error: err,
+        }) 
+    }
+}
+
+//GET TEAM MEMBERS FOR A USER
+export const getTeamMembers = async (req, res) => {
+    try {
+        const data = await axios.get('https://randomuser.me/api/?inc=picture,email,id,name,nat&results=10');
+        return res.status(200).send({
+            success: true,
+            message: 'Successful',
+            data: data.data,
+        })
+    }
+    catch(err) {
+        return res.status(500).send({
+            success: false,
+            message: 'Request failed',
+            error: err,
+        })
+    }
+}
+
+//GET AVAILABILITY
+export const getAvailability = async (req, res) => {
     const {id} = req.params;
-    const {firstName, lastName, age} = req.body;
-    const userDb = await userModel.findById(id);
-    userDb.save() //save after running logic to update object
-    console.log(userDb);
-    const user = users.find((user) => user.id === id);
+    try {
+        const user = await userModel.findById({id: id});
+        return res.status(200).send({
+            success: true,
+            message: 'Successful',
+            data: user.availability,
+        })
+    }
+    catch(err) {
+        return res.status(500).send({
+            success: false,
+            message: 'Request failed',
+        })
+    }
+}
 
-    if(firstName) user.firstName = firstName;
-    if(lastName) user.lastName = lastName;
-    if(age) user.age = age;
+//ADD AVAILABILITY
+export const addAvailability = async (req, res) => {
+    // const {id} = req.params;
+    const {date, id} = req.body;
+    try {
+        const user = await userModel.findById({id: id});
+        user.availability.push(date);
+        return res.status(200).send({
+            success: true,
+            message: 'Successful',
+            data: user.availability,
+        })
+    }
+    catch(err) {
+        return res.status(500).send({
+            success: false,
+            message: 'Request failed',
+        })
+    }
+}
 
-    res.send(`User with the id ${id} has been updated`);
+//DELETE AVAILABILITY
+export const removeAvailability = async (req, res) => {
+    // const {id} = req.params;
+    const {date, id} = req.body;
+    try {
+        const user = await userModel.findById({id: id});
+        const availability = user.availability.filter(item => item != date);
+        const updatedUser = await userModel.findOneAndUpdate(
+            {id: id}, 
+            {
+                availability: availability,
+            },
+            {
+                new: true,
+            }
+        )
+        return res.status(200).send({
+            success: true,
+            message: 'Successful',
+            data: updatedUser,
+        })
+    }
+    catch(err) {
+        return res.status(500).send({
+            success: false,
+            message: 'Request failed',
+        })
+    }
+}
+
+//GET APPOINTMENTS FOR A USER
+export const getAppointments = async (req, res) => {
+    const {userId} = req.params;
+    console.log(userId);
+    // return
+    try {
+        const data = await appointmentModel.find({userId: userId})
+        return res.status(200).send({
+            success: true,
+            message: 'Successful',
+            data: data,
+        })
+    }
+    catch(err) {
+        return res.status(500).send({
+            success: false,
+            message: 'Request failed',
+            error: err,
+        })
+    }
 }

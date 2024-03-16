@@ -68,6 +68,15 @@ const userSchema = new Schema({
         // required: true,
         default: false,
     },
+    rating: {
+        type: Number,
+        default: 0,
+    },
+    sales: {
+        type: Number,
+        default: 0,
+    },
+    availability: [Date],
 
 });
 
