@@ -134,7 +134,7 @@ export const addAvailability = async (req, res) => {
     // const {id} = req.params;
     const {date, uuid} = req.body;
     try {
-        const user = await userModel.findById(userId)
+        const user = await userModel.findOne({uuid: uuid})
         const updatedUser = await userModel.findOneAndUpdate(
             {
                 uuid: uuid
@@ -154,6 +154,7 @@ export const addAvailability = async (req, res) => {
         })
     }
     catch(err) {
+        console.log(err)
         return res.status(500).send({
             success: false,
             message: 'Request failed',
