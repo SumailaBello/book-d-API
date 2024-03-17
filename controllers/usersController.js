@@ -116,82 +116,51 @@ export const getTeamMembers = async (req, res) => {
     }
 }
 
-//GET AVAILABILITY
-// export const getAvailability = async (req, res) => {
-//     const {id} = req.params;
-//     try {
-//         const user = await userModel.findById({id: id});
-//         return res.status(200).send({
-//             success: true,
-//             message: 'Successful',
-//             data: user.availability,
-//         })
-//     }
-//     catch(err) {
-//         return res.status(500).send({
-//             success: false,
-//             message: 'Request failed',
-//         })
-//     }
-// }
-
 //ADD AVAILABILITY BY USER ID
 export const addAvailability = async (req, res) => {
     // const {id} = req.params;
-    const {date, uuid} = req.body;
+    const {date, uuid, mode} = req.body;
     try {
         const user = await userModel.findOne({uuid: uuid})
-        const updatedUser = await userModel.findOneAndUpdate(
-            {
-                uuid: uuid
-            },
-            {
-                availability: [...user.availability, date]
-            },
-            {
-                new: true,
-            }
-            
-        );
-        return res.status(200).send({
-            success: true,
-            message: 'Successful',
-            data: updatedUser,
-        })
+        if(mode == "add") {
+            const updatedUser = await userModel.findOneAndUpdate(
+                {
+                    uuid: uuid
+                },
+                {
+                    availability: [...user.availability, date]
+                },
+                {
+                    new: true,
+                }
+                
+            );
+            return res.status(200).send({
+                success: true,
+                message: 'Successful',
+                data: updatedUser,
+            })
+        }
+        else if(mode == "remove") {
+            const availability = user.availability.filter(item => item != date);
+            const updatedUser = await userModel.findOneAndUpdate(
+                {uuid: uuid}, 
+                {
+                    availability: availability,
+                },
+                {
+                    new: true,
+                }
+            )
+            return res.status(200).send({
+                success: true,
+                message: 'Successful',
+                data: updatedUser,
+            })
+        }
     }
     catch(err) {
         console.log(err)
-        return res.status(500).send({
-            success: false,
-            message: 'Request failed',
-            error: err,
-        })
-    }
-}
-
-//DELETE AVAILABILITY
-export const removeAvailability = async (req, res) => {
-    // const {id} = req.params;
-    const {date, uuid} = req.body;
-    try {
-        const user = await userModel.findOne({uuid: uuid});
-        const availability = user.availability.filter(item => item != date);
-        const updatedUser = await userModel.findOneAndUpdate(
-            {uuid: uuid}, 
-            {
-                availability: availability,
-            },
-            {
-                new: true,
-            }
-        )
-        return res.status(200).send({
-            success: true,
-            message: 'Successful',
-            data: updatedUser,
-        })
-    }
-    catch(err) {
         return res.status(500).send({
             success: false,
             message: 'Request failed',
