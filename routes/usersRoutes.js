@@ -1,7 +1,7 @@
 import express  from "express";
 import { deleteUser, getAllUsers, getUser, updateUser } from "../controllers/usersController.js";
 import { notFoundHandler } from "../controllers/404Controller.js";
-import { addAvailability, getAppointments, getTeamMembers, removeAvailability } from "../controllers/usersController.js";
+import { getAppointments, getTeamMembers, toggleAvailability } from "../controllers/usersController.js";
 
 const router = express.Router();
 
@@ -27,11 +27,8 @@ router.get('/appointments/:id', getAppointments);
 //GET USER AVAILABILITY BY USER ID
 // router.get('/availability/:id', getAvailability);
 
-//ADD USER AVAILABILITY
-router.post('/availability/add', addAvailability);
-
-//REMOVE USER AVAILABILITY
-router.post('/availability/remove', removeAvailability);
+//TOGGLE USER AVAILABILITY
+router.post('/availability/toggle', toggleAvailability);
 
 //NOT FOUND
 router.all('*', notFoundHandler);

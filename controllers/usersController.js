@@ -116,8 +116,8 @@ export const getTeamMembers = async (req, res) => {
     }
 }
 
-//ADD AVAILABILITY BY USER ID
-export const addAvailability = async (req, res) => {
+//TOGGLE AVAILABILITY BY USER ID
+export const toggleAvailability = async (req, res) => {
     // const {id} = req.params;
     const {date, uuid, mode} = req.body;
     try {
