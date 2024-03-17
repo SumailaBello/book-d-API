@@ -157,6 +157,7 @@ export const addAvailability = async (req, res) => {
         return res.status(500).send({
             success: false,
             message: 'Request failed',
+            error: err,
         })
     }
 }
@@ -187,6 +188,7 @@ export const removeAvailability = async (req, res) => {
         return res.status(500).send({
             success: false,
             message: 'Request failed',
+            error: err,
         })
     }
 }
