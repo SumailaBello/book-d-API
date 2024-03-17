@@ -166,12 +166,12 @@ export const addAvailability = async (req, res) => {
 //DELETE AVAILABILITY
 export const removeAvailability = async (req, res) => {
     // const {id} = req.params;
-    const {date, userId} = req.body;
+    const {date, uuid} = req.body;
     try {
-        const user = await userModel.findById(userId);
+        const user = await userModel.findOne({uuid: uuid});
         const availability = user.availability.filter(item => item != date);
         const updatedUser = await userModel.findOneAndUpdate(
-            {_id: userId}, 
+            {uuid: uuid}, 
             {
                 availability: availability,
             },
