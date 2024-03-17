@@ -134,10 +134,10 @@ export const addAvailability = async (req, res) => {
     // const {id} = req.params;
     const {date, userId} = req.body;
     try {
-        const user = await userModel.findById({id: userId})
+        const user = await userModel.findById(userId)
         const updatedUser = await userModel.findOneAndUpdate(
             {
-                _id: userId 
+                id: userId 
             },
             {
                 availability: [...user.availability, date]
