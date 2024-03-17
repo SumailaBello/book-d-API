@@ -76,7 +76,7 @@ const userSchema = new Schema({
         type: Number,
         default: 0,
     },
-    availability: [Date],
+    availability: [String],
 
 });
 
