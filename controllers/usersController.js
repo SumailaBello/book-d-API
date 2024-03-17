@@ -2,7 +2,7 @@ import {v4 as uuidv4} from "uuid";
 import {userModel} from "../schema/UserSchema.js";
 import {appointmentModel} from "../schema/AppointmentSchema.js";
 import axios from "axios";
-import sendNotificationEmail from "./notificationCOntroller.js";
+import sendNotificationEmail from "./notificationController.js";
 let users = [];
 
 //ADD NEW USER

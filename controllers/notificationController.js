@@ -10,7 +10,7 @@ const sendNotificationEmail = async (email)=> {
         email,
         "Booked Notification Email",
         `<h2>Book-d availability updated</h2>
-         <a href="bookd://Calendar" ></a>`
+         <a href="bookd://Calendar" >Click to Open App</a>`
       );
       console.log("Email sent successfully: ", mailResponse);
     } catch (error) {
