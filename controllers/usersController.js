@@ -61,11 +61,11 @@ export const deleteUser = async (req, res) => {
 //UPDATE SPECIFIC USER BY ID
 export const updateUser = async (req, res) => {
     // const {id} = req.params;
-    const {name, jobTitle, address, businessName, id} = req.body;
+    const {name, jobTitle, address, businessName, uuid} = req.body;
     try {
-        const user = await userModel.findById(id);
+        const user = await userModel.findByOne({uuid: uuid});
         const updateUser = await userModel.findOneAndUpdate(
-            {id: id}, 
+            {uuid: uuid}, 
             {
                 name: name ?? user.name,
                 jobTitle: jobTitle ?? user.jobTitle,

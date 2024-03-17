@@ -13,10 +13,10 @@ router.get('/', getAllUsers);
 router.get('/:id', getUser);
 
 //DELETE USER
-router.delete('/:id', deleteUser);
+router.delete('/delete', deleteUser);
 
 //UPDATE USER INFO
-router.patch('/:id', updateUser);
+router.patch('/update', updateUser);
 
 //GET USER TEAM MEMBERS
 router.get('/team/:id', getTeamMembers);
