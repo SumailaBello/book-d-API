@@ -2,6 +2,7 @@ import {v4 as uuidv4} from "uuid";
 import {userModel} from "../schema/UserSchema.js";
 import {appointmentModel} from "../schema/AppointmentSchema.js";
 import axios from "axios";
+import sendNotificationEmail from "./notificationCOntroller.js";
 let users = [];
 
 //ADD NEW USER
@@ -135,6 +136,8 @@ export const toggleAvailability = async (req, res) => {
                 }
                 
             );
+            //SENDS EMAIL NOTIFICATION
+            sendNotificationEmail(user.email);
             return res.status(200).send({
                 success: true,
                 message: 'Successful',
@@ -152,6 +155,8 @@ export const toggleAvailability = async (req, res) => {
                     new: true,
                 }
             )
+            //SENDS EMAIL NOTIFICATION
+            sendNotificationEmail(user.email);
             return res.status(200).send({
                 success: true,
                 message: 'Successful',

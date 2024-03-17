@@ -33,6 +33,7 @@ otpSchema.pre("save", async function (next) {
   console.log("New document saved to the database");
   // Only send an email when a new otp document is created
   if (this.isNew) {
+    //user email from user schema found in this.email
     await sendVerificationEmail(this.email, this.otp);
   }
   next();
