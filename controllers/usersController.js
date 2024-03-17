@@ -132,12 +132,12 @@ export const getTeamMembers = async (req, res) => {
 //ADD AVAILABILITY BY USER ID
 export const addAvailability = async (req, res) => {
     // const {id} = req.params;
-    const {date, id} = req.body;
+    const {date, userId} = req.body;
     try {
-        const user = await userModel.findById({id: id})
+        const user = await userModel.findById({id: userId})
         const updatedUser = await userModel.findOneAndUpdate(
             {
-                id: id
+                _id: userId 
             },
             {
                 availability: [...user.availability, date]
@@ -164,12 +164,12 @@ export const addAvailability = async (req, res) => {
 //DELETE AVAILABILITY
 export const removeAvailability = async (req, res) => {
     // const {id} = req.params;
-    const {date, id} = req.body;
+    const {date, userId} = req.body;
     try {
-        const user = await userModel.findById({id: id});
+        const user = await userModel.findById(userId);
         const availability = user.availability.filter(item => item != date);
         const updatedUser = await userModel.findOneAndUpdate(
-            {id: id}, 
+            {_id: userId}, 
             {
                 availability: availability,
             },
