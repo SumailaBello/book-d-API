@@ -132,12 +132,12 @@ export const getTeamMembers = async (req, res) => {
 //ADD AVAILABILITY BY USER ID
 export const addAvailability = async (req, res) => {
     // const {id} = req.params;
-    const {date, userId} = req.body;
+    const {date, uuid} = req.body;
     try {
         const user = await userModel.findById(userId)
         const updatedUser = await userModel.findOneAndUpdate(
             {
-                id: userId 
+                uuid: uuid
             },
             {
                 availability: [...user.availability, date]
