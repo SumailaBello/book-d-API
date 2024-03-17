@@ -9,7 +9,7 @@ const router = express.Router();
 //GET ALL USERS
 router.get('/', getAllUsers);
 
-//GET USER INFO BY ID
+//GET USER INFO BY UUID
 router.get('/:id', getUser);
 
 //DELETE USER

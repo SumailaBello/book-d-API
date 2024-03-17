@@ -10,12 +10,12 @@ export const getAllUsers = (req, res) => {
     console.log(users);
 }
 
-//GET SPECIFIC USER BY ID
+//GET SPECIFIC USER BY UUID
 export const getUser = async (req, res) => {
     const {id} = req.params;
     try {
-        const user = await userModel.findById(id);
-        console.log(user);
+        const user = await userModel.findOne({uuid: id});
+        // console.log(user);
         return res.status(200).send({
             success: true,
             message: 'Successful',
@@ -23,9 +23,11 @@ export const getUser = async (req, res) => {
         })
     } 
     catch (err) {
+        console.log(err);
         return res.status(500).send({
             success: false,
             message: 'Unable to find user',
+            error: err
         })
     }
 
@@ -62,15 +64,18 @@ export const deleteUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     // const {id} = req.params;
     const {name, jobTitle, address, businessName, uuid} = req.body;
+    const patchBody = {
+        name: name,
+        jobTitle: jobTitle,
+        address: address,
+        businessName: businessName
+    }
     try {
-        const user = await userModel.findByOne({uuid: uuid});
+        const user = await userModel.findOne({uuid: uuid});
         const updateUser = await userModel.findOneAndUpdate(
             {uuid: uuid}, 
             {
-                name: name ?? user.name,
-                jobTitle: jobTitle ?? user.jobTitle,
-                address: address ?? user.address,
-                businessName: businessName ?? user.businessName,
+                ...patchBody
             },
             {
                 new: true,
@@ -83,6 +88,7 @@ export const updateUser = async (req, res) => {
         }) 
     } 
     catch (err) {
+        console.log(err)
         return res.status(500).send({
             success: false,
             message: "Request Error.",
