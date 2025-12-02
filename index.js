@@ -26,7 +26,8 @@ app.use(passport.initialize());
 app.use(express.json());
 
 //port
-const port = process.env.PORT;
+// const port = process.env.PORT;
+const port = 3000;
 
 app.get('/', (req, res) => {
   res.send('Express Server');
